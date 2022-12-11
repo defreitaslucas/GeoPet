@@ -20,8 +20,8 @@ namespace GeoPet.Models
             modelBuilder.Entity<PetCarer>().HasKey(p => p.PetCarerId);
             modelBuilder.Entity<Pet>().HasKey(p => p.PetId);
             modelBuilder.Entity<Pet>()
-                .HasOne<PetCarer>(p => p.PetCarerId)
-                .WithMany(p => p.PetId)
+                .HasOne<PetCarer>(p => p.PetCarer)
+                .WithMany(p => p.Pets)
                 .HasForeignKey(p => p.PetId);
         }
     }
