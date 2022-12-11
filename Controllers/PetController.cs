@@ -17,7 +17,6 @@ namespace GeoPet.Controllers
                 Age = 3,
                 Size = "Medium",
                 Breed = "Husky Siberiano",
-                PetCarerId = null,
                 HashLocalization = null
             },
             new Pet
@@ -27,10 +26,10 @@ namespace GeoPet.Controllers
                 Age = 4,
                 Size = "Big",
                 Breed = "Pastor Alemão",
-                PetCarerId = null,
                 HashLocalization = null
             }
         };
+
         [HttpGet]
         public async Task<ActionResult<List<Pet>>> GetAllPets()
         {
@@ -59,14 +58,12 @@ namespace GeoPet.Controllers
         {
             var pet = pets.Find(x => x.PetId == id);
             if (pet is null) return NotFound("Sorry, but this pet doesn't exist.");
-
             pet.Name = body.Name;
             pet.Age = body.Age;
             pet.Size = body.Size;
             pet.Breed = body.Breed;
             pet.PetCarerId = body.PetCarerId;
             pet.HashLocalization = body.HashLocalization;
-
             return Ok(pets);
         }
 
@@ -76,9 +73,7 @@ namespace GeoPet.Controllers
         {
             var pet = pets.Find(x => x.PetId == id);
             if (pet is null) return NotFound("Sorry, but this pet doesn't exist.");
-
             pets.Remove(pet);
-
             return Ok(pets);
         }
     }

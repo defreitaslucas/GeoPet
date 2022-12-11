@@ -17,7 +17,6 @@ namespace GeoPet.Controllers
                 Email = "lucas.dfa@live.com",
                 ZipCode = 31210030,
                 Password = "123456",
-                PetId = null
             },
             new PetCarer
             {
@@ -26,9 +25,9 @@ namespace GeoPet.Controllers
                 Email = "giuliaavelinomattos@gmail.com",
                 ZipCode = 31150520,
                 Password = "123456",
-                PetId = null
             }
         };
+
         [HttpGet]
         public async Task<ActionResult<List<PetCarer>>> GetAllPetCarers()
         {
@@ -57,13 +56,10 @@ namespace GeoPet.Controllers
         {
             var petCarer = petCarers.Find(x => x.PetCarerId == id);
             if (petCarer is null) return NotFound("Sorry, but this pet doesn't exist.");
-
             petCarer.Name = body.Name;
             petCarer.Email = body.Email;
             petCarer.ZipCode = body.ZipCode;
             petCarer.Password = body.Password;
-            petCarer.PetId = body.PetId;
-
             return Ok(petCarers);
         }
 
@@ -73,9 +69,7 @@ namespace GeoPet.Controllers
         {
             var petCarer = petCarers.Find(x => x.PetCarerId == id);
             if (petCarer is null) return NotFound("Sorry, but this pet doesn't exist.");
-
             petCarers.Remove(petCarer);
-
             return Ok(petCarers);
         }
     }
