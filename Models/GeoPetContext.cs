@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace GeoPet.Models
 {
@@ -8,20 +6,23 @@ namespace GeoPet.Models
     {
         public GeoPetContext(DbContextOptions<GeoPetContext> options) : base(options) { }
         public GeoPetContext() { }
-
-        public DbSet<PetCarer> Pets { get; set; }
+        public DbSet<Pet> Pets { get; set; }
         public DbSet<PetCarer> PetCarers { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = "Server=127.0.0.1;Database=geopet_db;User=SA;Password=Password12!";
-
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseSqlServer("Server=127.0.0.1;Database=pets;User=SA;Password=Password12!;TrustServerCertificate=True");
             }
-            // executa o metodo UseSqlServer e passa a connection string a ele
-            optionsBuilder.UseSqlServer(connectionString);
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PetCarer>().HasKey(p => p.PetCarerId);
+            modelBuilder.Entity<Pet>().HasKey(p => p.PetId);
+            modelBuilder.Entity<Pet>()
+                .HasOne<PetCarer>(p => p.PetCarer)
+                .WithMany(p => p.Pets)
+                .HasForeignKey(p => p.PetId);
         }
     }
 }
