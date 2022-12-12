@@ -1,5 +1,6 @@
 using GeoPet.Models;
 using GeoPet.Services.PetCarerService;
+using GeoPet.Services.PetService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,8 +12,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPetCarerService, PetCarerService>();
+builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddTransient<GeoPetContext>();
+builder.Services.AddTransient<SeedData>();
 var app = builder.Build();
+
+if (args.Length == 1 && args[0].ToLower() == "seeddata")
+    SeedDataGeoPet(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -25,3 +31,13 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+void SeedDataGeoPet(IHost app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+    using (var scope = scopedFactory.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<SeedData>();
+        service.Seed();
+    }
+}

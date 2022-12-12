@@ -25,7 +25,7 @@ namespace GeoPet.Controllers
         [Route("{id}")]
         public async Task<ActionResult<Pet>> GetPetsById(int id)
         {
-            var pet = _petService.GetPetsById(id);
+            var pet = await _petService.GetPetsById(id);
             if (pet is null) return NotFound("Sorry, but this pet doesn't exist.");
             return Ok(pet);
         }
@@ -33,7 +33,7 @@ namespace GeoPet.Controllers
         [HttpPost]
         public async Task<ActionResult<List<Pet>>> AddPet(Pet body)
         {
-            var pet = _petService.AddPet(body);
+            var pet = await _petService.AddPet(body);
             return Ok(pet);
         }
 
@@ -41,7 +41,7 @@ namespace GeoPet.Controllers
         [Route("{id}")]
         public async Task<ActionResult<List<Pet>>> UpdatePet(int id, Pet body)
         {
-            var pet = _petService.UpdatePet(id, body);
+            var pet = await _petService.UpdatePet(id, body);
             if (pet is null) return NotFound("Sorry, but this pet doesn't exist.");
             return Ok(pet);
         }
@@ -50,7 +50,7 @@ namespace GeoPet.Controllers
         [Route("{id}")]
         public async Task<ActionResult<List<Pet>>> DeletePet(int id)
         {
-            var pet = _petService.DeletePet(id);
+            var pet = await _petService.DeletePet(id);
             if (pet is null) return NotFound("Sorry, but this pet doesn't exist.");
             return Ok(pet);
         }
