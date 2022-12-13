@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoPet.Models
 {
-    public class Pet // = post
+    public class Pet
     {
         [Key]
         public int PetId { get; set; }
@@ -12,8 +12,7 @@ namespace GeoPet.Models
         public string Size { get; set; } = string.Empty;
         public string Breed { get; set; } = string.Empty;
         public string? HashLocalization { get; set; } = string.Empty;
-        [ForeignKey("PetCarerId")]
         public int PetCarerId { get; set; }
-        public virtual PetCarer PetCarer { get; set; } = default!;
+        public virtual PetCarer? PetCarers { get; set; } = default!;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GeoPet.Models;
 using Microsoft.EntityFrameworkCore;
+using RestSharp;
 
 namespace GeoPet.Services.PetCarerService
 {
@@ -14,6 +15,10 @@ namespace GeoPet.Services.PetCarerService
 
         public async Task<List<PetCarer>> AddPetCarer(PetCarer body)
         {
+            var client = new RestClient("https://viacep.com.br/ws/");
+            var request = new RestRequest(body.ZipCode.ToString() + "/json", Method.Get);
+            var response = await client.GetAsync(request);
+
             _context.PetCarers.Add(body);
             await _context.SaveChangesAsync();
             return await _context.PetCarers.ToListAsync();
