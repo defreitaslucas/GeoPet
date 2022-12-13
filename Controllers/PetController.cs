@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using GeoPet.Models;
+using GeoPet.Services.PetService;
 
 namespace GeoPet.Controllers
 {
@@ -8,39 +9,23 @@ namespace GeoPet.Controllers
     [ApiController]
     public class PetController : ControllerBase
     {
-        private static List<Pet> pets = new List<Pet>
+        private readonly PetService _petService;
+        public PetController(IPetService petService)
         {
-            new Pet
-            {
-                PetId = 1,
-                Name = "Ayka",
-                Age = 3,
-                Size = "Medium",
-                Breed = "Husky Siberiano",
-                HashLocalization = null
-            },
-            new Pet
-            {
-                PetId = 2,
-                Name = "Kira",
-                Age = 4,
-                Size = "Big",
-                Breed = "Pastor Alemão",
-                HashLocalization = null
-            }
-        };
+            _petService = (PetService?)petService;
+        }
 
         [HttpGet]
         public async Task<ActionResult<List<Pet>>> GetAllPets()
         {
-            return Ok(pets);
+            return await _petService.GetAllPets();
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<PetCarer>> GetPetsById(int id)
+        public async Task<ActionResult<Pet>> GetPetsById(int id)
         {
-            var pet = pets.Find(x => x.PetId == id);
+            var pet = _petService.GetPetsById(id);
             if (pet is null) return NotFound("Sorry, but this pet doesn't exist.");
             return Ok(pet);
         }
@@ -48,33 +33,26 @@ namespace GeoPet.Controllers
         [HttpPost]
         public async Task<ActionResult<List<Pet>>> AddPet(Pet body)
         {
-            pets.Add(body);
-            return Ok(pets);
+            var pet = _petService.AddPet(body);
+            return Ok(pet);
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<ActionResult<List<Pet>>> UpdatePet(int id, Pet body)
         {
-            var pet = pets.Find(x => x.PetId == id);
+            var pet = _petService.UpdatePet(id, body);
             if (pet is null) return NotFound("Sorry, but this pet doesn't exist.");
-            pet.Name = body.Name;
-            pet.Age = body.Age;
-            pet.Size = body.Size;
-            pet.Breed = body.Breed;
-            pet.PetCarerId = body.PetCarerId;
-            pet.HashLocalization = body.HashLocalization;
-            return Ok(pets);
+            return Ok(pet);
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<List<Pet>>> DeletePet(int id)
         {
-            var pet = pets.Find(x => x.PetId == id);
+            var pet = _petService.DeletePet(id);
             if (pet is null) return NotFound("Sorry, but this pet doesn't exist.");
-            pets.Remove(pet);
-            return Ok(pets);
+            return Ok(pet);
         }
     }
 }
