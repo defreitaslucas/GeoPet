@@ -1,6 +1,8 @@
 ﻿using GeoPet.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using RestSharp;
+using System.Net;
 
 namespace GeoPet.Services.PetCarerService
 {
@@ -19,9 +21,20 @@ namespace GeoPet.Services.PetCarerService
             var request = new RestRequest(body.ZipCode.ToString() + "/json", Method.Get);
             var response = await client.GetAsync(request);
 
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(string.Format("No ZipCode found {0}", body.ZipCode)),
+                    ReasonPhrase = "ZipCode Not Found"
+                };
+                throw new Exception(resp);
+            }
             _context.PetCarers.Add(body);
             await _context.SaveChangesAsync();
             return await _context.PetCarers.ToListAsync();
+
+
         }
 
         public async Task<List<PetCarer>?> DeletePetCarer(int id)

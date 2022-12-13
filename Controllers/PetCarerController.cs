@@ -33,8 +33,15 @@ namespace GeoPet.Controllers
         [HttpPost]
         public async Task<ActionResult<List<PetCarer>>> AddPetCarer(PetCarer body)
         {
-            var result = await _petCarerService.AddPetCarer(body);
-            return Ok(result);
+            try
+            {
+                var result = await _petCarerService.AddPetCarer(body);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPut]
