@@ -10,6 +10,6 @@ namespace GeoPet.Models
         public string Email { get; set; } = string.Empty;
         public int ZipCode { get; set; }
         public string Password { get; set; } = string.Empty;
-        public virtual ICollection<Pet>? Pets { get; set; } = default!;
+        public ICollection<Pet>? Pets { get; set; } = default!;
     }
 }

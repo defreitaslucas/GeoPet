@@ -1,4 +1,4 @@
-﻿namespace GeoPet.Models
+﻿/* namespace GeoPet.Models
 {
     public class SeedData
     {
@@ -11,13 +11,12 @@
 
         public void Seed()
         {
-            if (!_context.PetCarers.Any())
+            if (!_context.PetCarers.Any() && !_context.Pets.Any())
             {
                 var petCarers = new List<PetCarer>()
                 {
                     new PetCarer()
                     {
-                        PetCarerId = 1,
                         Name = "Lucas",
                         Email = "lucas.dfa@live.com",
                         ZipCode = 31210030,
@@ -25,18 +24,12 @@
                     },
                     new PetCarer()
                     {
-                        PetCarerId = 2,
                         Name = "Giulia",
                         Email = "giuliaavelinomattos@gmail.com",
                         ZipCode = 31150520,
                         Password = "123456"
                     },
                 };
-                _context.PetCarers.AddRange(petCarers);
-                _context.SaveChanges();
-            }
-            if (!_context.Pets.Any())
-            {
                 var pets = new List<Pet>()
                 {
                     new Pet()
@@ -46,8 +39,7 @@
                         Age = 3,
                         Size = "Medium",
                         Breed = "Husky Siberiano",
-                        HashLocalization = null,
-                        PetCarerId = 1,
+                        HashLocalization = null
                     },
                     new Pet()
                     {
@@ -56,8 +48,7 @@
                         Age = 4,
                         Size = "Large",
                         Breed = "Pastor Alemão",
-                        HashLocalization = null,
-                        PetCarerId = 2,
+                        HashLocalization = null
                     },
                     new Pet()
                     {
@@ -66,8 +57,7 @@
                         Age = 16,
                         Size = "small",
                         Breed = "Vira-Lata",
-                        HashLocalization = null,
-                        PetCarerId = 1,
+                        HashLocalization = null
                     },
                     new Pet()
                     {
@@ -76,14 +66,14 @@
                         Age = 5,
                         Size = "Medium",
                         Breed = "Husky Siberiano",
-                        HashLocalization = null,
-                        PetCarerId = 1,
+                        HashLocalization = null
                     }
                 };
+                _context.PetCarers.AddRange(petCarers);
                 _context.Pets.AddRange(pets);
                 _context.SaveChanges();
             }
         }
     }
 }
-
+*/

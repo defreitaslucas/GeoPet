@@ -15,7 +15,7 @@ namespace GeoPet.Models
                 optionsBuilder.UseSqlServer("Server=127.0.0.1;Database=pets;User=SA;Password=Password12!;TrustServerCertificate=True");
             }
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+ /*       protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PetCarer>().HasKey(p => p.PetCarerId);
             modelBuilder.Entity<Pet>().HasKey(p => p.PetId);
@@ -24,5 +24,6 @@ namespace GeoPet.Models
                 .WithMany(p => p.Pets)
                 .HasForeignKey(p => p.PetId);
         }
+ */
     }
 }
