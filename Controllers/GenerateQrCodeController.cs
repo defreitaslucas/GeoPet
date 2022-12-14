@@ -1,33 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using IronBarCode;
-using System;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using GeoPet.Services.PetService;
-
+using System.IO;
+using Microsoft.AspNetCore.Mvc;
+using QRCoder;
 namespace GeoPet.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class GenerateQrCodeController : ControllerBase
+    public class GenerateQrCodeController : Controller
     {
-        private readonly IPetService _petService;
-
-        public GenerateQrCodeController(IPetService petService)
+        public IActionResult Index()
         {
-            _petService = petService;
+            return View();
         }
-
-        [HttpGet]
-        [Route("{id")]
-        public async Task<ActionResult<GeneratedBarcode>> GetQrCode(int petId)
+        [HttpPost]
+        public IActionResult Index(string qrTexto)
         {
-            var pet = await _petService.GetPetsById(petId);
-            if (pet == null) return NotFound();
-            var convertPet = pet.ToString();
-
-            GeneratedBarcode barcode = QRCodeWriter.CreateQrCode(convertPet, 500, QRCodeWriter.QrErrorCorrectionLevel.Medium).SaveAsHtmlFile("PetInformation.html");
-            return barcode;
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrTexto, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            return View(BitmapToBytes(qrCodeImage));
+        }
+        private static Byte[] BitmapToBytes(Bitmap img)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                return stream.ToArray();
+            }
         }
     }
 }
