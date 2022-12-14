@@ -1,6 +1,8 @@
 ﻿using GeoPet.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using RestSharp;
+using System.Net;
 
 namespace GeoPet.Services.PetCarerService
 {
@@ -19,6 +21,11 @@ namespace GeoPet.Services.PetCarerService
             var request = new RestRequest(body.ZipCode.ToString() + "/json", Method.Get);
             var response = await client.GetAsync(request);
 
+            if (response.Content.Contains("erro"))
+            {
+                var ex = new Exception("ZipCode Not Found");
+                throw ex;
+            }
             _context.PetCarers.Add(body);
             await _context.SaveChangesAsync();
             return await _context.PetCarers.ToListAsync();
@@ -51,8 +58,17 @@ namespace GeoPet.Services.PetCarerService
         public async Task<List<PetCarer>?> UpdatePetCarer(int id, PetCarer body)
         {
             var petCarer = await _context.PetCarers.FindAsync(id);
-
             if (petCarer is null) return null;
+
+            var client = new RestClient("https://viacep.com.br/ws/");
+            var request = new RestRequest(body.ZipCode.ToString() + "/json", Method.Get);
+            var response = await client.GetAsync(request);
+
+            if (response.Content.Contains("erro"))
+            {
+                var ex = new Exception("ZipCode Not Found");
+                throw ex;
+            }
 
             petCarer.Name = body.Name;
             petCarer.Email = body.Email;
