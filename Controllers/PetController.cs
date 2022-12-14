@@ -9,10 +9,10 @@ namespace GeoPet.Controllers
     [ApiController]
     public class PetController : ControllerBase
     {
-        private readonly PetService _petService;
+        private readonly IPetService _petService;
         public PetController(IPetService petService)
         {
-            _petService = (PetService?)petService;
+            _petService = petService;
         }
 
         [HttpGet]
