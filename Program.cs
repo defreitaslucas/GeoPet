@@ -1,6 +1,7 @@
 using GeoPet.Models;
 using GeoPet.Services.PetCarerService;
 using GeoPet.Services.PetService;
+using GeoPet.Services.SearchService;
 using Microsoft.EntityFrameworkCore;
 
 var db = new GeoPetContext();
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<GeoPetContext>();
 builder.Services.AddScoped<IPetCarerService, PetCarerService>();
 builder.Services.AddScoped<IPetService, PetService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
 //builder.Services.AddTransient<GeoPetContext>();
 //builder.Services.AddTransient<SeedData>();
 var app = builder.Build();

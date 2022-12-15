@@ -1,5 +1,4 @@
 ﻿using GeoPet.Models.Responses;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -7,6 +6,7 @@ namespace GeoPet.Services.SearchService
 {
     public class SearchService : ISearchService
     {
+        public SearchService() { }
         public async Task<AddressResponse> GetAddress(double lat, double lon) 
         {
             var client = new HttpClient();
@@ -19,7 +19,7 @@ namespace GeoPet.Services.SearchService
             var stringJson = await result.Content.ReadAsStringAsync();
             var dto = JsonConvert.DeserializeObject<AddressResponse>(stringJson);
 
-            return dto.address;
+            return dto;
         }
     }
 }
